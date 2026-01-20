@@ -20,7 +20,7 @@
 
   <main class="app">
     <section class="screen login-screen">
-      <div class="brand">
+      <div class="brand brand-center">
         <div class="logo">WT</div>
         <div>
           <p class="brand-kicker">WorkTime</p>
@@ -29,8 +29,18 @@
         </div>
       </div>
 
-      <form class="card login-card">
-        <h2>Login Karyawan</h2>
+      <form class="card login-card centered">
+        <div class="login-title">
+          <h2>Login</h2>
+          <span class="badge">User/Admin</span>
+        </div>
+        <label class="field">
+          <span>Peran</span>
+          <select class="select">
+            <option value="user">Karyawan</option>
+            <option value="admin">Admin</option>
+          </select>
+        </label>
         <label class="field">
           <span>Email</span>
           <input type="email" placeholder="nama@perusahaan.com" autocomplete="username" required />
@@ -39,14 +49,14 @@
           <span>Password</span>
           <input type="password" placeholder="********" autocomplete="current-password" required />
         </label>
-        <div class="row">
+        <div class="row spread">
           <label class="checkbox">
             <input type="checkbox" />
             <span>Ingat saya</span>
           </label>
           <button type="button" class="text-link">Lupa password?</button>
         </div>
-        <a class="btn primary" href="dashboard.html">Masuk</a>
+        <a class="btn primary full" href="dashboard.html">Masuk</a>
         <p class="hint">Demo UI saja, tidak ada validasi.</p>
       </form>
     </section>

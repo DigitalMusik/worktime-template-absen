@@ -111,9 +111,10 @@ p {
 }
 
 .login-screen {
-  grid-template-columns: minmax(260px, 1.1fr) minmax(260px, 1fr);
+  grid-template-columns: 1fr;
   align-items: center;
   min-height: 80vh;
+  justify-items: center;
 }
 
 .hidden {
@@ -164,6 +165,23 @@ p {
   justify-self: end;
 }
 
+.login-title {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+}
+
+.login-card.centered {
+  justify-self: center;
+  width: min(420px, 100%);
+}
+
+.brand-center {
+  justify-items: center;
+  text-align: center;
+}
+
 .field {
   display: grid;
   gap: 8px;
@@ -173,6 +191,15 @@ p {
 
 .field input,
 .field textarea {
+  border: var(--border);
+  border-radius: 12px;
+  padding: 12px 14px;
+  font-size: 0.95rem;
+  background: #fff;
+  font-family: inherit;
+}
+
+.select {
   border: var(--border);
   border-radius: 12px;
   padding: 12px 14px;
@@ -263,6 +290,10 @@ p {
 
 .btn:hover {
   transform: translateY(-1px);
+}
+
+.btn.full {
+  width: 100%;
 }
 
 .icon-btn {
