@@ -245,6 +245,12 @@ p {
   box-shadow: var(--soft-shadow);
 }
 
+.btn.success {
+  background: var(--accent-2);
+  color: #fff;
+  box-shadow: var(--soft-shadow);
+}
+
 .btn.secondary {
   background: var(--accent-2);
   color: #fff;
@@ -257,6 +263,35 @@ p {
 
 .btn:hover {
   transform: translateY(-1px);
+}
+
+.icon-btn {
+  width: 56px;
+  height: 56px;
+  padding: 0;
+  border-radius: 50%;
+}
+
+.icon-btn .icon {
+  width: 26px;
+  height: 26px;
+  display: grid;
+  place-items: center;
+}
+
+.icon-btn svg {
+  width: 24px;
+  height: 24px;
+  stroke: currentColor;
+  stroke-width: 2;
+  fill: none;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.camera-actions {
+  justify-content: center;
+  gap: 14px;
 }
 
 .hint {

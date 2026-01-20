@@ -27,6 +27,7 @@ let activePhotoTarget = null;
 let currentFacingMode = "environment";
 let cameraDevices = [];
 let currentCameraIndex = 0;
+let hasCapturedPhoto = false;
 
 const toRadians = (value) => (value * Math.PI) / 180;
 
@@ -177,6 +178,7 @@ const startCamera = async (constraints) => {
 
 const openCamera = async (target) => {
   activePhotoTarget = target;
+  hasCapturedPhoto = false;
   cameraStatus.textContent = "Menyiapkan kamera...";
   modal.classList.remove("hidden");
   canvas.classList.add("hidden");
@@ -190,7 +192,7 @@ const openCamera = async (target) => {
   try {
     await startCamera({ facingMode: currentFacingMode });
     await syncCameraDevices();
-    cameraStatus.textContent = "Arahkan kamera ke wajah Anda.";
+    cameraStatus.textContent = "Arahkan kamera lalu tekan tombol kamera.";
   } catch (error) {
     cameraStatus.textContent = "Akses kamera ditolak atau tidak tersedia.";
   }
@@ -248,10 +250,15 @@ const capturePhoto = () => {
   ctx.drawImage(video, 0, 0, width, height);
   canvas.classList.remove("hidden");
   video.classList.add("hidden");
-  cameraStatus.textContent = "Foto tertangkap. Klik Gunakan Foto.";
+  hasCapturedPhoto = true;
+  cameraStatus.textContent = "Foto tertangkap. Klik ikon centang untuk gunakan.";
 };
 
 const useCapturedPhoto = () => {
+  if (!hasCapturedPhoto) {
+    cameraStatus.textContent = "Ambil foto terlebih dahulu.";
+    return;
+  }
   const dataUrl = canvas.toDataURL("image/jpeg", 0.9);
   if (activePhotoTarget === "checkin" && checkinPreview) {
     checkinPreview.src = dataUrl;
@@ -267,6 +274,7 @@ const useCapturedPhoto = () => {
 const retakePhoto = () => {
   canvas.classList.add("hidden");
   video.classList.remove("hidden");
+  hasCapturedPhoto = false;
   cameraStatus.textContent = "Ulangi pengambilan foto.";
 };
 
