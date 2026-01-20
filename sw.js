@@ -33,6 +33,8 @@ self.addEventListener("fetch", (event) => {
   event.respondWith(
     caches.match(event.request).then((cached) => {
       if (cached) return cached;
+      if (event.request.method !== "GET") return fetch(event.request);
+      if (!event.request.url.startsWith("http")) return fetch(event.request);
       return fetch(event.request).then((response) => {
         const responseClone = response.clone();
         caches.open(CACHE_NAME).then((cache) => {
