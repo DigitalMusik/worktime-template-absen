@@ -25,6 +25,8 @@ const overtimePreview = document.querySelector("#overtime-preview");
 let cameraStream = null;
 let activePhotoTarget = null;
 let currentFacingMode = "environment";
+let cameraDevices = [];
+let currentCameraIndex = 0;
 
 const toRadians = (value) => (value * Math.PI) / 180;
 
@@ -151,6 +153,28 @@ const updatePresenceAvailability = () => {
   );
 };
 
+const syncCameraDevices = async () => {
+  if (!navigator.mediaDevices?.enumerateDevices) return;
+  const devices = await navigator.mediaDevices.enumerateDevices();
+  cameraDevices = devices.filter((device) => device.kind === "videoinput");
+  const track = cameraStream?.getVideoTracks?.()[0];
+  const settings = track?.getSettings?.();
+  if (settings?.deviceId) {
+    const idx = cameraDevices.findIndex(
+      (device) => device.deviceId === settings.deviceId
+    );
+    if (idx >= 0) currentCameraIndex = idx;
+  }
+};
+
+const startCamera = async (constraints) => {
+  cameraStream = await navigator.mediaDevices.getUserMedia({
+    video: constraints,
+    audio: false,
+  });
+  video.srcObject = cameraStream;
+};
+
 const openCamera = async (target) => {
   activePhotoTarget = target;
   cameraStatus.textContent = "Menyiapkan kamera...";
@@ -164,11 +188,8 @@ const openCamera = async (target) => {
   }
 
   try {
-    cameraStream = await navigator.mediaDevices.getUserMedia({
-      video: { facingMode: currentFacingMode },
-      audio: false,
-    });
-    video.srcObject = cameraStream;
+    await startCamera({ facingMode: currentFacingMode });
+    await syncCameraDevices();
     cameraStatus.textContent = "Arahkan kamera ke wajah Anda.";
   } catch (error) {
     cameraStatus.textContent = "Akses kamera ditolak atau tidak tersedia.";
@@ -184,19 +205,22 @@ const closeCamera = () => {
 };
 
 const switchCamera = async () => {
-  currentFacingMode =
-    currentFacingMode === "environment" ? "user" : "environment";
-  if (cameraStream) {
-    cameraStream.getTracks().forEach((track) => track.stop());
-    cameraStream = null;
-  }
   cameraStatus.textContent = "Mengganti kamera...";
   try {
-    cameraStream = await navigator.mediaDevices.getUserMedia({
-      video: { facingMode: currentFacingMode },
-      audio: false,
-    });
-    video.srcObject = cameraStream;
+    await syncCameraDevices();
+    if (cameraDevices.length < 2) {
+      cameraStatus.textContent = "Perangkat hanya memiliki satu kamera.";
+      return;
+    }
+    currentCameraIndex =
+      (currentCameraIndex + 1) % cameraDevices.length;
+    const nextDevice = cameraDevices[currentCameraIndex];
+    if (cameraStream) {
+      cameraStream.getTracks().forEach((track) => track.stop());
+      cameraStream = null;
+    }
+    await startCamera({ deviceId: { exact: nextDevice.deviceId } });
+    cameraStatus.textContent = "Kamera berhasil diganti.";
   } catch (error) {
     cameraStatus.textContent = "Gagal mengganti kamera.";
   }
