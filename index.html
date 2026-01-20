@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>WorkTime - Login</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div class="bg-wrap" aria-hidden="true">
+    <div class="orb orb-1"></div>
+    <div class="orb orb-2"></div>
+    <div class="grid"></div>
+  </div>
+
+  <main class="app">
+    <section class="screen login-screen">
+      <div class="brand">
+        <div class="logo">WT</div>
+        <div>
+          <p class="brand-kicker">WorkTime</p>
+          <h1>Presensi & Lembur</h1>
+          <p class="brand-sub">Masuk untuk mencatat kehadiran, lembur, dan riwayat presensi.</p>
+        </div>
+      </div>
+
+      <form class="card login-card">
+        <h2>Login Karyawan</h2>
+        <label class="field">
+          <span>Email</span>
+          <input type="email" placeholder="nama@perusahaan.com" required />
+        </label>
+        <label class="field">
+          <span>Password</span>
+          <input type="password" placeholder="********" required />
+        </label>
+        <div class="row">
+          <label class="checkbox">
+            <input type="checkbox" />
+            <span>Ingat saya</span>
+          </label>
+          <button type="button" class="text-link">Lupa password?</button>
+        </div>
+        <a class="btn primary" href="dashboard.html">Masuk</a>
+        <p class="hint">Demo UI saja, tidak ada validasi.</p>
+      </form>
+    </section>
+  </main>
+</body>
+</html>

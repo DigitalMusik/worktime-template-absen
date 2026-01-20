@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>WorkTime - Dashboard</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div class="bg-wrap" aria-hidden="true">
+    <div class="orb orb-1"></div>
+    <div class="orb orb-2"></div>
+    <div class="grid"></div>
+  </div>
+
+  <main class="app">
+    <header class="topbar">
+      <div class="top-left">
+        <div class="logo">WT</div>
+        <div>
+          <p class="brand-kicker">Dashboard Karyawan</p>
+          <h1>Selamat datang, Rani</h1>
+        </div>
+      </div>
+      <div class="top-right">
+        <div class="status">
+          <span class="dot"></span>
+          <span>Shift Pagi · 08:00 - 17:00</span>
+        </div>
+        <a class="btn ghost" href="index.html">Keluar</a>
+      </div>
+    </header>
+
+    <section class="panel active" id="dashboard">
+      <div class="panel-grid">
+        <div class="card summary">
+          <h3>Ringkasan Hari Ini</h3>
+          <div class="summary-row">
+            <div>
+              <p class="label">Status</p>
+              <p class="value">Belum check-in</p>
+            </div>
+            <div>
+              <p class="label">Lokasi</p>
+              <p class="value">Jakarta Barat</p>
+            </div>
+            <div>
+              <p class="label">Keterlambatan</p>
+              <p class="value">0 menit</p>
+            </div>
+          </div>
+        </div>
+        <div class="card flow">
+          <h3>Alur Presensi</h3>
+          <ol class="flow-steps">
+            <li>Login aplikasi</li>
+            <li>Presensi masuk / pulang</li>
+            <li>Tambah lembur jika perlu</li>
+            <li>Lihat riwayat presensi</li>
+          </ol>
+        </div>
+        <div class="card alert">
+          <h3>Pengingat</h3>
+          <p>Pastikan GPS aktif dan unggah foto saat check-in/out.</p>
+          <button class="btn secondary">Aktifkan Lokasi</button>
+        </div>
+      </div>
+    </section>
+
+    <nav class="bottom-nav" aria-label="Menu Utama">
+      <a class="nav-item active" href="dashboard.html">
+        <span class="icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" role="img">
+            <path d="M3 11.2L12 4l9 7.2v8.8a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z"></path>
+          </svg>
+        </span>
+        <span>Dashboard</span>
+      </a>
+      <a class="nav-item" href="absen.html">
+        <span class="icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" role="img">
+            <path d="M7 3h10a2 2 0 0 1 2 2v15a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1V5a2 2 0 0 1 2-2zm0 4h10M8 11h8M8 15h6"></path>
+          </svg>
+        </span>
+        <span>Absen</span>
+      </a>
+      <a class="nav-item" href="riwayat.html">
+        <span class="icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" role="img">
+            <path d="M4 5h16a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1zm4 4h8M8 13h8M8 17h5"></path>
+          </svg>
+        </span>
+        <span>Riwayat</span>
+      </a>
+    </nav>
+  </main>
+</body>
+</html>

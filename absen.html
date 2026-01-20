@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>WorkTime - Absen</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div class="bg-wrap" aria-hidden="true">
+    <div class="orb orb-1"></div>
+    <div class="orb orb-2"></div>
+    <div class="grid"></div>
+  </div>
+
+  <main class="app">
+    <header class="topbar">
+      <div class="top-left">
+        <div class="logo">WT</div>
+        <div>
+          <p class="brand-kicker">Presensi Karyawan</p>
+          <h1>Absen Hari Ini</h1>
+        </div>
+      </div>
+      <div class="top-right">
+        <div class="status">
+          <span class="dot"></span>
+          <span>Shift Pagi · 08:00 - 17:00</span>
+        </div>
+        <a class="btn ghost" href="index.html">Keluar</a>
+      </div>
+    </header>
+
+    <section class="panel active" id="absen">
+      <div class="panel-grid two">
+        <div class="card">
+          <h3>Absen Hari Ini</h3>
+          <p class="muted">Status akan otomatis terisi saat jam masuk dimulai.</p>
+          <div class="info-list">
+            <div class="info-item">
+              <span class="badge warn">Belum absen masuk</span>
+              <p>Jika sudah masuk jam kerja, sistem otomatis mencatat absen masuk.</p>
+            </div>
+            <div class="info-item">
+              <span class="badge">Absen keluar</span>
+              <p>Tombol absen keluar aktif setelah absen masuk tercatat.</p>
+            </div>
+            <div class="info-item">
+              <span class="badge success">Absen lembur</span>
+              <p>Tombol lembur aktif mulai pukul 18:00.</p>
+            </div>
+          </div>
+        </div>
+        <div class="card">
+          <h3>Lokasi & Aksi Presensi</h3>
+          <label class="field">
+            <span>Bukti Absen Masuk</span>
+            <div class="row">
+              <button class="btn ghost" data-action="open-camera" data-target="checkin">Ambil Bukti Absensi</button>
+              <img id="checkin-preview" class="photo-preview" alt="Preview check-in" />
+            </div>
+          </label>
+          <label class="field">
+            <span>Lokasi</span>
+            <input id="checkin-location" type="text" placeholder="Lat, Lng" readonly />
+          </label>
+          <label class="field">
+            <span>Keterangan Lokasi</span>
+            <input id="checkin-address" type="text" placeholder="Menunggu lokasi..." readonly />
+          </label>
+          <p class="location-status" id="checkin-status">Mengecek radius lokasi...</p>
+          <div class="row">
+            <button id="checkin-btn" class="btn primary" disabled>Absen Masuk</button>
+            <button class="btn ghost" data-action="gps-checkin">Gunakan GPS</button>
+          </div>
+          <hr class="divider" />
+          <label class="field">
+            <span>Lokasi</span>
+            <input id="checkout-location" type="text" placeholder="Lat, Lng" readonly />
+          </label>
+          <label class="field">
+            <span>Keterangan Lokasi</span>
+            <input id="checkout-address" type="text" placeholder="Menunggu lokasi..." readonly />
+          </label>
+          <p class="location-status" id="checkout-status">Mengecek radius lokasi...</p>
+          <div class="row">
+            <button id="checkout-btn" class="btn secondary" disabled>Absen Keluar</button>
+            <button class="btn ghost" data-action="gps-checkout">Gunakan GPS</button>
+          </div>
+          <div class="row">
+            <button class="btn ghost">Absen Lembur (18:00)</button>
+          </div>
+          <label class="field">
+            <span>Bukti Absen Masuk Lembur</span>
+            <div class="row">
+              <button class="btn ghost" data-action="open-camera" data-target="overtime">Ambil Bukti Lembur</button>
+              <img id="overtime-preview" class="photo-preview" alt="Preview lembur" />
+            </div>
+          </label>
+        </div>
+      </div>
+    </section>
+
+    <nav class="bottom-nav" aria-label="Menu Utama">
+      <a class="nav-item" href="dashboard.html">
+        <span class="icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" role="img">
+            <path d="M3 11.2L12 4l9 7.2v8.8a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z"></path>
+          </svg>
+        </span>
+        <span>Dashboard</span>
+      </a>
+      <a class="nav-item active" href="absen.html">
+        <span class="icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" role="img">
+            <path d="M7 3h10a2 2 0 0 1 2 2v15a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1V5a2 2 0 0 1 2-2zm0 4h10M8 11h8M8 15h6"></path>
+          </svg>
+        </span>
+        <span>Absen</span>
+      </a>
+      <a class="nav-item" href="riwayat.html">
+        <span class="icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" role="img">
+            <path d="M4 5h16a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1zm4 4h8M8 13h8M8 17h5"></path>
+          </svg>
+        </span>
+        <span>Riwayat</span>
+      </a>
+    </nav>
+  </main>
+
+  <div class="modal hidden" id="camera-modal" role="dialog" aria-modal="true" aria-label="Kamera">
+    <div class="modal-card">
+      <div class="modal-header">
+        <h3>Ambil Foto</h3>
+        <button class="btn ghost" data-action="close-camera">Tutup</button>
+      </div>
+      <div class="camera-frame">
+        <video id="camera-video" playsinline autoplay muted></video>
+        <canvas id="camera-canvas" class="hidden"></canvas>
+      </div>
+      <div class="row">
+        <button class="btn secondary" data-action="capture-photo">Ambil</button>
+        <button class="btn ghost" data-action="retake-photo">Ulangi</button>
+        <button class="btn primary" data-action="use-photo">Gunakan Foto</button>
+      </div>
+      <p class="hint" id="camera-status">Izinkan akses kamera untuk melanjutkan.</p>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
