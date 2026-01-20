@@ -555,6 +555,13 @@ p {
   align-items: center;
 }
 
+.table-row span {
+  display: inline-flex;
+  gap: 8px;
+  align-items: center;
+  min-height: 28px;
+}
+
 .table-row.head {
   background: rgba(10, 111, 118, 0.12);
   font-weight: 700;
@@ -641,10 +648,18 @@ p {
 @media (max-width: 900px) {
   .login-screen {
     grid-template-columns: 1fr;
+    min-height: auto;
   }
 
   .login-card {
     justify-self: start;
+    width: 100%;
+    max-width: 520px;
+  }
+
+  .brand {
+    grid-template-columns: 1fr;
+    text-align: left;
   }
 
   .table-row {
@@ -654,6 +669,53 @@ p {
 }
 
 @media (max-width: 640px) {
+  .app {
+    padding: 24px 16px 110px;
+  }
+
+  .brand {
+    gap: 12px;
+  }
+
+  .login-card {
+    max-width: 100%;
+  }
+
+  .row.spread {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .field.inline {
+    width: 100%;
+  }
+
+  .field.inline input {
+    width: 100%;
+    min-width: 0;
+  }
+
+  .table-row.head {
+    display: none;
+  }
+
+  .table-row {
+    grid-template-columns: 1fr;
+    gap: 8px;
+  }
+
+  .table-row span {
+    justify-content: space-between;
+  }
+
+  .table-row span::before {
+    content: attr(data-label);
+    font-size: 0.8rem;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+
   .topbar {
     flex-direction: column;
     align-items: flex-start;
