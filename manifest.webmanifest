@@ -1,7 +1,8 @@
 {
   "name": "WorkTime Presensi",
   "short_name": "WorkTime",
-  "start_url": "index.html",
+  "start_url": "/worktime-template-absen/index.html",
+  "scope": "/worktime-template-absen/",
   "display": "standalone",
   "background_color": "#f7fbfb",
   "theme_color": "#0f9aa6",
