@@ -7,7 +7,20 @@
   "background_color": "#f7fbfb",
   "theme_color": "#0f9aa6",
   "description": "Aplikasi presensi karyawan untuk masuk, lembur, dan riwayat.",
+  "id": "/worktime-template-absen/",
   "icons": [
+    {
+      "src": "icons/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
     {
       "src": "icons/icon.svg",
       "sizes": "any",
