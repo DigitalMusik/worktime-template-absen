@@ -1,17 +1,17 @@
 const CACHE_NAME = "worktime-pwa-v1";
 const ASSETS = [
-  "index.html",
-  "dashboard.html",
-  "absen.html",
-  "riwayat.html",
-  "styles.css",
-  "app.js",
-  "sw-register.js",
-  "manifest.webmanifest",
-  "icons/icon-192.png",
-  "icons/icon-512.png",
-  "icons/apple-touch-icon.png",
-  "favicon.ico",
+  "/worktime-template-absen/index.html",
+  "/worktime-template-absen/dashboard.html",
+  "/worktime-template-absen/absen.html",
+  "/worktime-template-absen/riwayat.html",
+  "/worktime-template-absen/assets/css/styles.css",
+  "/worktime-template-absen/assets/js/app.js",
+  "/worktime-template-absen/assets/js/sw-register.js",
+  "/worktime-template-absen/manifest.webmanifest",
+  "/worktime-template-absen/assets/icons/icon-192.png",
+  "/worktime-template-absen/assets/icons/icon-512.png",
+  "/worktime-template-absen/assets/icons/apple-touch-icon.png",
+  "/worktime-template-absen/favicon.ico",
 ];
 
 self.addEventListener("install", (event) => {
