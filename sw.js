@@ -8,15 +8,30 @@ const ASSETS = [
   "app.js",
   "sw-register.js",
   "manifest.webmanifest",
-  "icons/icon.svg",
   "icons/icon-192.png",
   "icons/icon-512.png",
   "icons/apple-touch-icon.png",
+  "favicon.ico",
 ];
 
 self.addEventListener("install", (event) => {
   event.waitUntil(
-    caches.open(CACHE_NAME).then((cache) => cache.addAll(ASSETS))
+    caches.open(CACHE_NAME).then(async (cache) => {
+      const requests = ASSETS.map(
+        (asset) => new Request(asset, { cache: "reload" })
+      );
+      const results = await Promise.allSettled(
+        requests.map((request) => fetch(request))
+      );
+      await Promise.all(
+        results.map((result, index) => {
+          if (result.status !== "fulfilled") return null;
+          const response = result.value;
+          if (!response.ok) return null;
+          return cache.put(requests[index], response.clone());
+        })
+      );
+    })
   );
 });
 
