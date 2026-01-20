@@ -208,21 +208,30 @@ const switchCamera = async () => {
   cameraStatus.textContent = "Mengganti kamera...";
   try {
     await syncCameraDevices();
-    if (cameraDevices.length < 2) {
-      cameraStatus.textContent = "Perangkat hanya memiliki satu kamera.";
-      return;
-    }
-    currentCameraIndex =
-      (currentCameraIndex + 1) % cameraDevices.length;
-    const nextDevice = cameraDevices[currentCameraIndex];
     if (cameraStream) {
       cameraStream.getTracks().forEach((track) => track.stop());
       cameraStream = null;
     }
-    await startCamera({ deviceId: { exact: nextDevice.deviceId } });
+    if (cameraDevices.length >= 2) {
+      currentCameraIndex = (currentCameraIndex + 1) % cameraDevices.length;
+      const nextDevice = cameraDevices[currentCameraIndex];
+      await startCamera({ deviceId: { exact: nextDevice.deviceId } });
+      cameraStatus.textContent = "Kamera berhasil diganti.";
+      return;
+    }
+    currentFacingMode =
+      currentFacingMode === "environment" ? "user" : "environment";
+    await startCamera({ facingMode: currentFacingMode });
     cameraStatus.textContent = "Kamera berhasil diganti.";
   } catch (error) {
-    cameraStatus.textContent = "Gagal mengganti kamera.";
+    try {
+      currentFacingMode =
+        currentFacingMode === "environment" ? "user" : "environment";
+      await startCamera({ facingMode: currentFacingMode });
+      cameraStatus.textContent = "Kamera berhasil diganti.";
+    } catch (fallbackError) {
+      cameraStatus.textContent = "Gagal mengganti kamera.";
+    }
   }
 };
 
