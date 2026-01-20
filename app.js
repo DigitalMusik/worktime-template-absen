@@ -24,6 +24,7 @@ const overtimePreview = document.querySelector("#overtime-preview");
 
 let cameraStream = null;
 let activePhotoTarget = null;
+let currentFacingMode = "environment";
 
 const toRadians = (value) => (value * Math.PI) / 180;
 
@@ -164,7 +165,7 @@ const openCamera = async (target) => {
 
   try {
     cameraStream = await navigator.mediaDevices.getUserMedia({
-      video: { facingMode: "environment" },
+      video: { facingMode: currentFacingMode },
       audio: false,
     });
     video.srcObject = cameraStream;
@@ -180,6 +181,25 @@ const closeCamera = () => {
     cameraStream = null;
   }
   modal.classList.add("hidden");
+};
+
+const switchCamera = async () => {
+  currentFacingMode =
+    currentFacingMode === "environment" ? "user" : "environment";
+  if (cameraStream) {
+    cameraStream.getTracks().forEach((track) => track.stop());
+    cameraStream = null;
+  }
+  cameraStatus.textContent = "Mengganti kamera...";
+  try {
+    cameraStream = await navigator.mediaDevices.getUserMedia({
+      video: { facingMode: currentFacingMode },
+      audio: false,
+    });
+    video.srcObject = cameraStream;
+  } catch (error) {
+    cameraStatus.textContent = "Gagal mengganti kamera.";
+  }
 };
 
 const capturePhoto = () => {
@@ -243,6 +263,10 @@ document.addEventListener("click", (event) => {
 
   if (action === "retake-photo") {
     retakePhoto();
+  }
+
+  if (action === "switch-camera") {
+    switchCamera();
   }
 });
 
