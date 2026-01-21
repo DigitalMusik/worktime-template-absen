@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>WorkTime - Login</title>
+  <meta name="csrf-token" content="" />
+  <meta name="theme-color" content="#0f9aa6" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <link rel="manifest" href="manifest.json" />
+  <link rel="icon" href="favicon.ico" />
+  <link rel="icon" href="assets/icons/icon-192.png" />
+  <link rel="apple-touch-icon" href="assets/icons/apple-touch-icon.png" />
+  <link rel="stylesheet" href="assets/css/styles.css" />
+</head>
+<body>
+  <div class="bg-wrap" aria-hidden="true">
+    <div class="orb orb-1"></div>
+    <div class="orb orb-2"></div>
+    <div class="grid"></div>
+  </div>
+
+  <main class="app">
+    <section class="screen login-screen">
+      <div class="brand brand-center">
+        <div class="logo">WT</div>
+        <div>
+          <p class="brand-kicker">WorkTime</p>
+          <h1>Presensi & Lembur</h1>
+          <p class="brand-sub">Masuk untuk mencatat kehadiran, lembur, dan riwayat presensi.</p>
+        </div>
+      </div>
+
+      <form class="card login-card centered" method="POST" action="#">
+        <div class="login-title">
+          <h2>Login</h2>
+          <p class="muted">Masukkan email kantor dan kata sandi Anda.</p>
+        </div>
+        <label class="field">
+          <span>Email</span>
+          <input
+            type="email"
+            name="email"
+            value=""
+            placeholder="nama@perusahaan.com"
+            autocomplete="username"
+            required
+          />
+        </label>
+        <label class="field">
+          <span>Password</span>
+          <input type="password" name="password" placeholder="********" autocomplete="current-password" required />
+        </label>
+        <div class="row spread" style="margin-bottom: 16px;">
+          <span class="hint">Anda akan tetap masuk di perangkat ini.</span>
+        </div>
+        <button class="btn primary full" type="submit">Masuk</button>
+        <p class="hint">Jika lupa password, hubungi admin.</p>
+      </form>
+      <button
+        id="pwa-install-btn"
+        class="btn primary"
+        style="position: fixed; right: 20px; bottom: 20px; z-index: 60;"
+        type="button"
+      >
+        Download Aplikasi
+      </button>
+    </section>
+  </main>
+
+  <script src="assets/js/sw-register.js"></script>
+  <script src="pwa-install.js"></script>
+  <script>
+    if ("serviceWorker" in navigator) {
+      navigator.serviceWorker.register("sw.js");
+    }
+  </script>
+</body>
+</html>

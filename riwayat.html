@@ -4,8 +4,11 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>WorkTime - Riwayat</title>
+  <meta name="csrf-token" content="" />
   <meta name="theme-color" content="#0f9aa6" />
-  <link rel="manifest" href="manifest.webmanifest" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <link rel="manifest" href="manifest.json" />
   <link rel="icon" href="favicon.ico" />
   <link rel="icon" href="assets/icons/icon-192.png" />
   <link rel="apple-touch-icon" href="assets/icons/apple-touch-icon.png" />
@@ -32,7 +35,9 @@
           <span class="dot"></span>
           <span>Shift Pagi · 08:00 - 17:00</span>
         </div>
-        <a class="btn ghost" href="index.html">Keluar</a>
+        <form>
+          <button class="btn ghost" type="button">Keluar</button>
+        </form>
       </div>
     </header>
 
@@ -43,46 +48,43 @@
             <h3>Riwayat Presensi</h3>
             <p class="muted">Filter rentang tanggal untuk melihat riwayat.</p>
           </div>
-          <div class="row">
+          <form class="row">
             <label class="field inline">
               <span>Dari</span>
-              <input type="date" />
+              <input type="date" name="from" />
             </label>
             <label class="field inline">
               <span>Sampai</span>
-              <input type="date" />
+              <input type="date" name="to" />
             </label>
-            <button class="btn secondary">Terapkan</button>
-          </div>
+            <button class="btn secondary" style="width: 100%" type="submit">Terapkan</button>
+            <a class="btn ghost" style="width: 100%" href="riwayat.html">Tampilkan Semua</a>
+          </form>
         </div>
         <div class="table">
           <div class="table-row head">
             <span>Tanggal</span>
+            <span>Hari</span>
             <span>Masuk</span>
             <span>Pulang</span>
             <span>Status</span>
             <span>Lembur</span>
           </div>
           <div class="table-row">
-            <span data-label="Tanggal">19 Jan 2024</span>
-            <span data-label="Masuk">08:02</span>
-            <span data-label="Pulang">17:15</span>
+            <span data-label="Tanggal">14 Feb 2026</span>
+            <span data-label="Hari">Jumat</span>
+            <span data-label="Masuk">08:59</span>
+            <span data-label="Pulang">17:06</span>
             <span data-label="Status"><span class="badge success">Hadir</span></span>
-            <span data-label="Lembur">1.5 jam</span>
-          </div>
-          <div class="table-row">
-            <span data-label="Tanggal">18 Jan 2024</span>
-            <span data-label="Masuk">08:25</span>
-            <span data-label="Pulang">17:01</span>
-            <span data-label="Status"><span class="badge warn">Terlambat</span></span>
             <span data-label="Lembur">-</span>
           </div>
           <div class="table-row">
-            <span data-label="Tanggal">17 Jan 2024</span>
-            <span data-label="Masuk">08:00</span>
-            <span data-label="Pulang">17:10</span>
-            <span data-label="Status"><span class="badge success">Hadir</span></span>
-            <span data-label="Lembur">-</span>
+            <span data-label="Tanggal">13 Feb 2026</span>
+            <span data-label="Hari">Kamis</span>
+            <span data-label="Masuk">09:12</span>
+            <span data-label="Pulang">17:02</span>
+            <span data-label="Status"><span class="badge warn">Telat</span></span>
+            <span data-label="Lembur">1 jam</span>
           </div>
         </div>
       </div>
@@ -115,6 +117,13 @@
       </a>
     </nav>
   </main>
+
   <script src="assets/js/sw-register.js"></script>
+  <script src="pwa-install.js"></script>
+  <script>
+    if ("serviceWorker" in navigator) {
+      navigator.serviceWorker.register("sw.js");
+    }
+  </script>
 </body>
 </html>

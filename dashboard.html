@@ -4,8 +4,11 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>WorkTime - Dashboard</title>
+  <meta name="csrf-token" content="" />
   <meta name="theme-color" content="#0f9aa6" />
-  <link rel="manifest" href="manifest.webmanifest" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <link rel="manifest" href="manifest.json" />
   <link rel="icon" href="favicon.ico" />
   <link rel="icon" href="assets/icons/icon-192.png" />
   <link rel="apple-touch-icon" href="assets/icons/apple-touch-icon.png" />
@@ -24,15 +27,17 @@
         <div class="logo">WT</div>
         <div>
           <p class="brand-kicker">Dashboard Karyawan</p>
-          <h1>Selamat datang, Rani</h1>
+          <h1>Selamat datang, Karyawan</h1>
         </div>
       </div>
       <div class="top-right">
         <div class="status">
           <span class="dot"></span>
-          <span>Shift Pagi · 08:00 - 17:00</span>
+          <span>Shift belum diatur</span>
         </div>
-        <a class="btn ghost" href="index.html">Keluar</a>
+        <form>
+          <button class="btn ghost" type="button">Keluar</button>
+        </form>
       </div>
     </header>
 
@@ -40,19 +45,28 @@
       <div class="panel-grid">
         <div class="card summary">
           <h3>Ringkasan Hari Ini</h3>
-          <div class="summary-row">
+          <div
+            class="summary-row"
+            data-work-start="09:00:00"
+            data-late-tolerance="0"
+            data-has-checkin="0"
+            data-server-time=""
+          >
             <div>
               <p class="label">Status</p>
-              <p class="value">Belum check-in</p>
+              <p class="value" id="dashboard-status">Belum check-in</p>
             </div>
             <div>
               <p class="label">Lokasi</p>
-              <p class="value">Jakarta Barat</p>
+              <p class="value" id="dashboard-location" data-lat="" data-lng="">-</p>
             </div>
-            <div>
+            <div class="summary-full">
               <p class="label">Keterlambatan</p>
-              <p class="value">0 menit</p>
+              <p class="value" id="dashboard-late">0 jam 0 menit 0 detik</p>
             </div>
+          </div>
+          <div class="row">
+            <a class="btn primary" style="width: 100%" href="absen.html#absen-form">Absen Sekarang</a>
           </div>
         </div>
         <div class="card flow">
@@ -67,7 +81,7 @@
         <div class="card alert">
           <h3>Pengingat</h3>
           <p>Pastikan GPS aktif dan unggah foto saat check-in/out.</p>
-          <button class="btn secondary">Aktifkan Lokasi</button>
+          <button class="btn secondary" type="button">Aktifkan Lokasi</button>
         </div>
       </div>
     </section>
@@ -99,6 +113,94 @@
       </a>
     </nav>
   </main>
+
   <script src="assets/js/sw-register.js"></script>
+  <script>
+    (function () {
+      const summary = document.querySelector(".summary-row");
+      if (!summary) return;
+
+      const workStart = summary.dataset.workStart;
+      const hasCheckin = summary.dataset.hasCheckin === "1";
+      const tolerance = parseInt(summary.dataset.lateTolerance || "0", 10);
+
+      if (!workStart || hasCheckin) return;
+
+      const statusEl = document.getElementById("dashboard-status");
+      const lateEl = document.getElementById("dashboard-late");
+
+      const formatDuration = (totalSeconds) => {
+        const hours = Math.floor(totalSeconds / 3600);
+        const minutes = Math.floor((totalSeconds % 3600) / 60);
+        const seconds = totalSeconds % 60;
+        return `${hours} jam ${minutes} menit ${seconds} detik`;
+      };
+
+      const startLateTimer = () => {
+        const serverTime = summary.dataset.serverTime;
+        const baseNow = serverTime ? new Date(serverTime) : new Date();
+        const [h, m, s] = workStart
+          .split(":")
+          .map((value) => parseInt(value, 10));
+        const start = new Date(baseNow);
+        start.setHours(h || 0, m || 0, s || 0, 0);
+
+        let lateSeconds = Math.max(
+          0,
+          Math.floor((baseNow - start) / 1000) - tolerance * 60
+        );
+        let running = lateSeconds > 0;
+
+        const tick = () => {
+          const now = new Date();
+          if (!running && now >= start) {
+            lateSeconds = Math.max(
+              0,
+              Math.floor((now - start) / 1000) - tolerance * 60
+            );
+            running = lateSeconds > 0;
+          }
+
+          if (running) {
+            if (statusEl) statusEl.textContent = "Telat";
+            if (lateEl) lateEl.textContent = formatDuration(lateSeconds);
+            lateSeconds += 1;
+          } else if (lateEl) {
+            lateEl.textContent = "0 jam 0 menit 0 detik";
+          }
+        };
+
+        tick();
+        setInterval(tick, 1000);
+      };
+
+      startLateTimer();
+
+      const locationEl = document.getElementById("dashboard-location");
+      const lat = locationEl?.dataset.lat;
+      const lng = locationEl?.dataset.lng;
+
+      if (locationEl && lat && lng) {
+        locationEl.textContent = "Memuat alamat...";
+        fetch(`/api/reverse-geocode?lat=${lat}&lng=${lng}`)
+          .then((response) => response.json())
+          .then((data) => {
+            locationEl.textContent = data?.display_name
+              ? data.display_name
+              : `Lat: ${lat}, Lng: ${lng}`;
+          })
+          .catch(() => {
+            locationEl.textContent = `Lat: ${lat}, Lng: ${lng}`;
+          });
+      }
+    })();
+  </script>
+
+  <script src="pwa-install.js"></script>
+  <script>
+    if ("serviceWorker" in navigator) {
+      navigator.serviceWorker.register("sw.js");
+    }
+  </script>
 </body>
 </html>
